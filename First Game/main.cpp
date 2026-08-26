@@ -2,9 +2,13 @@
 #include <stdio.h>
 #include <iostream>
 #include <thread>
+#include "player.h"
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode({800, 600}), "Playball");
+	sf::RectangleShape p1(sf::Vector2f(200.f, 20.f));
+	p1.setFillColor(sf::Color(255, 0, 0));
+	p1.setPosition(300.f, 575.f);
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 	while (window.isOpen()) {
@@ -14,7 +18,20 @@ int main()
 				window.close();
 			}
 		}
-		window.clear(sf::Color::Yellow);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+			p1.move(-4.f, 0.f);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			p1.move(4.f, 0.f);
+		}
+		if (p1.getPosition().x  <  0)  {
+			p1.setPosition(0.f, p1.getPosition().y);
+		}
+		if (p1.getPosition().x > 600) {
+			p1.setPosition(600.f, p1.getPosition().y);
+		}
+		window.clear(sf::Color::Black);
+		window.draw(p1);
 		window.display();
 	}
 }
