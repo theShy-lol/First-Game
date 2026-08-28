@@ -3,12 +3,16 @@
 #include <iostream>
 #include <thread>
 #include "player.h"
+#include "blocks.h"
+#include "ball.h"
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode({800, 600}), "Playball");
 	sf::RectangleShape p1(sf::Vector2f(200.f, 20.f));
 	p1.setFillColor(sf::Color(255, 0, 0));
 	p1.setPosition(300.f, 575.f);
+	Lines blocks(3);
+	ball ball1(9.5, 10.5);
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
 	while (window.isOpen()) {
@@ -32,6 +36,8 @@ int main()
 		}
 		window.clear(sf::Color::Black);
 		window.draw(p1);
+		blocks.drawblock(window, 12);
+		ball1.drawb(window);
 		window.display();
 	}
 }
