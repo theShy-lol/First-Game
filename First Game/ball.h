@@ -10,8 +10,8 @@ public:
 	ball(float v, float g, sf::Vector2f s);
 	void drawb(sf::RenderWindow& w);
 	void update(float dt);
-	bool collidesWith(sf::RectangleShape& other);
-	void richoshe(const sf::RectangleShape& p, std::vector<sf::RectangleShape>& b);
+	bool collidesWith(Block& other);
+	void richoshe(const sf::RectangleShape& p, std::vector<Block>& b);
 private:
 	sf::Vector2f speed;
 	sf::Vector2f direction;
@@ -31,14 +31,15 @@ ball::ball(float v, float g, sf::Vector2f s) {
 void ball::drawb(sf::RenderWindow& w) {
 	w.draw(this->b);
 }
-bool ball::collidesWith(sf::RectangleShape& other) {
-	if (this->b.getRadius() <= other.getPosition().x) {
+bool ball::collidesWith(Block& other) {
+	sf::FloatRect ballBound = this->b.getGlobalBounds();
+	sf::FloatRect otherBound = other.getGlobalBounds();
+	if (ballBound.intersects(otherBound)) {
 		return true;
 	}
 	return false;
 }
-
-void ball::richoshe(const sf::RectangleShape& p, std::vector<sf::RectangleShape>& b) {
+void ball::richoshe(const sf::RectangleShape& p, std::vector<Block>& b) {
 	sf::FloatRect ballBound = this->b.getGlobalBounds();
 	sf::FloatRect playerBound = p.getGlobalBounds();
 	if (ballBound.intersects(playerBound)) {
@@ -48,10 +49,13 @@ void ball::richoshe(const sf::RectangleShape& p, std::vector<sf::RectangleShape>
 	for (auto i = b.begin(); i != b.end();) {
 		sf::FloatRect blockbounds = i->getGlobalBounds();
 		if (ballBound.intersects(blockbounds)) {
+			i->takeHit();
 			this->speed.y = std::abs(this->speed.y); 
 			std::cout << "Block hit" << std::endl;
-			i = b.erase(i);
-			break;
+			this->speed.y += 0.5;
+			if(i->getLives() <= 0)
+				i = b.erase(i);
+				break;
 		}
 		else {
 			
@@ -64,6 +68,10 @@ void ball::richoshe(const sf::RectangleShape& p, std::vector<sf::RectangleShape>
 	}
 	if (ballBound.left + ballBound.width >= 800.0f) {
 		this->speed.x = -std::abs(this->speed.x);
+	}
+	if (ballBound.top <= 0.0f) {
+		this->speed.y = std::abs(this->speed.y);
+		this->b.setPosition(this->b.getPosition().x, 10.0f);
 	}
 }
 void ball::update(float dt) {

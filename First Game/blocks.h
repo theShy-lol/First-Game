@@ -5,34 +5,66 @@
 #include <thread>
 #include <vector>
 
+class Block {
+public:
+	Block();
+	Block(char l, sf::Vector2f Position);
+	void takeHit();
+	void drawB (sf::RenderWindow& r)const;
+	sf::FloatRect getGlobalBounds() const;
+	int getLives();
+private:
+	sf::RectangleShape block;
+	int lives = 3;
+};
 
+Block::Block() {
+	this->block.setSize(sf::Vector2f(190.f, 50.f));
+	this->block.setOutlineThickness(7.f);
+	this->block.setOutlineColor(sf::Color::Black);
+	this->block.setFillColor(sf::Color::Cyan);
+}
+Block::Block(char l,sf::Vector2f Position) {
+	this->lives = l;
+	this->block.setSize(sf::Vector2f(190.f, 50.f));
+	this->block.setOutlineThickness(7.f);
+	this->block.setOutlineColor(sf::Color::Black);
+	this->block.setFillColor(sf::Color::Cyan);
+	this->block.setPosition(Position);
+}
+void Block::takeHit() {
+	this->lives -= 1;
+	this->block.setFillColor(sf::Color::Blue);
+	if (this->lives == 2) {
+		this->block.setFillColor(sf::Color::Green);
+	}
+}
+void Block::drawB(sf::RenderWindow &r) const{
+	r.draw(this->block);
+}
+sf::FloatRect Block::getGlobalBounds() const {
+	return this->block.getGlobalBounds();
+}
+int Block::getLives() {
+	return this->lives;
+}
 
 class Lines {
 public:
-	Lines(int l, int nr);
-	void breakL();
+	Lines(int nr);
 	void drawblock(sf::RenderWindow &w);
-	std::vector<sf::RectangleShape>& getblocks();
+	std::vector<Block>& getblocks();
 private:
-	int lives;
-	sf::RectangleShape line;
-	std::vector<sf::RectangleShape> blocks;
+	std::vector<Block> blocks;
 };
-Lines::Lines(int l, int nr) {
-	this->lives = l;
+Lines::Lines(int nr) {
 	float grid = 800.f;
 	float spaceB = 200.f;
 	float currentX = 0.f;
 	float currentY = 0.f;
 	while (nr > 0) {
-		sf::RectangleShape gg;
-		gg.setSize(sf::Vector2f(190.f, 50.f));
-		gg.setOutlineThickness(7.f);
-		gg.setOutlineColor(sf::Color::Black);
-		gg.setFillColor(sf::Color::Cyan);
-		gg.setPosition(sf::Vector2f(currentX, currentY));
 
-		this->blocks.push_back(gg);
+		this->blocks.emplace_back(3,sf::Vector2f(currentX, currentY));
 		currentX += spaceB;
 
 		if (currentX >= grid){
@@ -42,18 +74,13 @@ Lines::Lines(int l, int nr) {
 		nr--;
 	}
 }
-void Lines::breakL() {
-	if (this->lives <= 0) {
-		this->line.setSize(sf::Vector2f(0.f, 0.f));
-		
-	}
-}
+
 void Lines::drawblock(sf::RenderWindow &w) {
-	for (const auto& block : this->blocks) {
-		w.draw(block);
-	}
+	for (const auto& block : blocks) {
+		block.drawB(w);
+	} 
 	
 }
-std::vector<sf::RectangleShape>& Lines::getblocks() {
+std::vector<Block>& Lines::getblocks() {
 	return this->blocks;
 }

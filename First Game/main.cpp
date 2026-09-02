@@ -14,7 +14,7 @@ int main()
 	sf::RectangleShape p1(sf::Vector2f(200.f, 20.f));
 	p1.setFillColor(sf::Color(255, 0, 0));
 	p1.setPosition(300.f, 575.f);
-	Lines blocks(3, 12);
+	Lines blocks(12);
 	ball ball1(0, -9.5 , speed);
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
@@ -27,10 +27,10 @@ int main()
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			p1.move(-4.f, 0.f);
+			p1.move(-6.f, 0.f);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			p1.move(4.f, 0.f);
+			p1.move(6.f, 0.f);
 		}
 		if (p1.getPosition().x  <  0)  {
 			p1.setPosition(0.f, p1.getPosition().y);

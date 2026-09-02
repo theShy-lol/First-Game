@@ -154,6 +154,9 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shader.frag" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
