@@ -5,6 +5,8 @@
 #include <thread>
 #include <vector>
 
+
+
 class Block {
 public:
 	Block();
@@ -22,7 +24,7 @@ Block::Block() {
 	this->block.setSize(sf::Vector2f(190.f, 50.f));
 	this->block.setOutlineThickness(7.f);
 	this->block.setOutlineColor(sf::Color::Black);
-	this->block.setFillColor(sf::Color::Cyan);
+	this->block.setFillColor(sf::Color::White);
 }
 Block::Block(char l,sf::Vector2f Position) {
 	this->lives = l;

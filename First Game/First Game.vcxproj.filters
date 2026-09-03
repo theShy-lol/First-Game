@@ -35,5 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />
+    <None Include="vertex.vert" />
+    <None Include="background.frag" />
   </ItemGroup>
 </Project>
