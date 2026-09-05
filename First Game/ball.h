@@ -2,13 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <iostream>
-#include <thread>
+
 
 
 
 class ball {
 public:
-	ball(float v, float g, sf::Vector2f s, int sc);
+	ball(sf::Vector2f s, int sc);
 	void drawb(sf::RenderWindow& w);
 	void update(float dt);
 	bool collidesWith(Block& other);
@@ -19,16 +19,12 @@ private:
 	sf::Vector2f speed;
 	sf::Vector2f direction;
 	sf::CircleShape b;
-	float velocity;
-	float gravity;
 	int score;
 };
-ball::ball(float v, float g, sf::Vector2f s, int sc) {
+ball::ball(sf::Vector2f s, int sc) {
 	this->b.setPosition(sf::Vector2f(350, 300));
 	this->b.setRadius(15.f);
 	this->b.setFillColor(sf::Color(255, 255, 255));
-	this->velocity = v;
-	this->gravity = g;
 	this->speed = s;
 	this->score = sc;
 }
@@ -63,25 +59,25 @@ void ball::richoshe(const sf::RectangleShape& p, std::vector<Block>& b) {
 				++i;
 			}
 			break;
-			}
-			else {
+		}
+		else {
 			++i;
-			}
-			if (ballBound.left <= 0.0f) {
-				this->speed.x *= -1.f;
-				this->b.setPosition(15.f, this->b.getPosition().y);
-			}
-			if (ballBound.left + ballBound.width >= 800.0f) {
-				this->speed.x = -std::abs(this->speed.x);
-			}
-			if (ballBound.top <= 0.0f) {
-				this->speed.y = std::abs(this->speed.y);
-				this->b.setPosition(this->b.getPosition().x, 10.0f);
-			}
 		}
 	}
+	if (ballBound.left <= 0.0f) {
+				this->speed.x *= -1.f;
+				this->b.setPosition(15.f, this->b.getPosition().y);
+	}
+	if (ballBound.left + ballBound.width >= 800.0f) {
+				this->speed.x = -std::abs(this->speed.x);
+	}
+	if (ballBound.top <= 0.0f) {
+		this->speed.y = std::abs(this->speed.y);
+		this->b.setPosition(this->b.getPosition().x, 10.0f);
+	}
+}
 void ball::update(float dt) {
-	this->b.move(this->speed);
+	this->b.move(this->speed.x * dt, this->speed.y * dt);
 }
 
 sf::FloatRect ball::getPosition() {

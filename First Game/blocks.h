@@ -2,7 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <iostream>
-#include <thread>
 #include <vector>
 
 
@@ -61,7 +60,7 @@ private:
 };
 Lines::Lines(int nr) {
 	float grid = 800.f;
-	float spaceB = 200.f;
+	float spaceB = 206.f;
 	float currentX = 0.f;
 	float currentY = 0.f;
 	while (nr > 0) {
@@ -70,7 +69,7 @@ Lines::Lines(int nr) {
 		currentX += spaceB;
 
 		if (currentX >= grid){
-			currentX = 0.5;
+			currentX = 0.0;
 			currentY += 50.f;
 		}
 		nr--;

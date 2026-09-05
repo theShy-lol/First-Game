@@ -152,7 +152,6 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="blocks.h" />
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="background.frag" />

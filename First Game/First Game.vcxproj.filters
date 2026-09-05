@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="player.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="blocks.h">
       <Filter>Source Files</Filter>
     </ClInclude>

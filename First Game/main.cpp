@@ -1,21 +1,19 @@
 #include <SFML/Graphics.hpp>
-#include <stdio.h>
 #include <iostream>
-#include <thread>
-#include "player.h"
 #include "blocks.h"
 #include "ball.h"
 int main()
 {	
 	//Shader + Clock
 	sf::Clock clock;
+	sf::Clock globalClock;
 	sf::Shader shader;
 	if (!shader.loadFromFile("vertex.vert", "shader.frag")) {
 		std::cout << "Couldn't load shader!" << std::endl;
 	}
 	//Start
 	float dt = 0;
-	sf::Vector2f speed(3.0f,3.0f);
+	sf::Vector2f speed(250.0f,250.0f);
 	sf::RenderWindow window(sf::VideoMode({800, 600}), "Playball");
 	sf::Shader bgShader;
 	bgShader.loadFromFile("background.frag", sf::Shader::Fragment);
@@ -31,7 +29,7 @@ int main()
 	p1.setTexture(&dummy);
 	p1.setPosition(300.f, 575.f);
 	Lines blocks(12);
-	ball ball1(0, -9.5, speed, 0);
+	ball ball1(speed, 0);
 	//Font
 	sf::Font font;
 	if (!font.loadFromFile("Fonts/1.ttf")) {
@@ -48,6 +46,7 @@ int main()
 	while (window.isOpen()) {
 		sf::Event event;
 		dt = clock.restart().asSeconds();
+		float tt = globalClock.getElapsedTime().asSeconds();
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed || ball1.getPosition().top >= 600 ) {
 				std::cout << "Game Over!" << std::endl;
@@ -55,10 +54,10 @@ int main()
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			p1.move(-6.f, 0.f);
+			p1.move(-360 * dt, 0.f);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			p1.move(6.f, 0.f);
+			p1.move(360 * dt, 0.f);
 		}
 		if (p1.getPosition().x  <  0)  {
 			p1.setPosition(0.f, p1.getPosition().y);
@@ -66,8 +65,8 @@ int main()
 		if (p1.getPosition().x > 600) {
 			p1.setPosition(600.f, p1.getPosition().y);
 		}
-		bgShader.setUniform("uTime", dt);
-		shader.setUniform("uTime", clock.getElapsedTime().asSeconds());
+		bgShader.setUniform("uTime", tt);
+		shader.setUniform("uTime", tt);
 		ball1.update(dt);
 		window.clear(sf::Color::Black);
 		ball1.richoshe(p1, blocks.getblocks());
